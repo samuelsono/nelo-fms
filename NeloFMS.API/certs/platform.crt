@@ -1,0 +1,87 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            db:f4:e8:93:be:f4:c5:16:cb:dd:85:cb:a0:03:3a:8b
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN=app.nelotec.co.za
+        Validity
+            Not Before: Dec  2 17:58:07 2025 GMT
+            Not After : Mar  6 17:58:07 2028 GMT
+        Subject: CN=platform
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:9f:a2:90:4e:83:fa:b9:fc:8e:21:75:06:d9:c9:
+                    cf:ce:22:01:37:e5:9c:3f:26:44:5c:50:8e:79:45:
+                    af:fc:d0:b7:fd:01:aa:bd:18:1c:88:22:45:3f:3c:
+                    b8:3d:d1:31:92:45:38:f0:11:c8:24:c7:29:f4:4e:
+                    1c:5d:44:a0:12:0d:58:3b:86:06:17:67:94:6c:5f:
+                    7b:3a:3b:ea:fa:e1:33:6d:21:08:03:9e:95:9c:30:
+                    92:1c:71:63:d8:3c:6f:72:88:fa:7e:70:d9:a9:7c:
+                    c6:a8:d7:39:8e:d6:d3:fa:a5:f4:cb:db:e5:30:47:
+                    71:9c:af:c8:ac:38:a2:c9:1a:11:09:d6:8b:35:43:
+                    b6:73:d2:ee:03:ac:68:81:c0:cf:69:09:0b:88:52:
+                    6a:f8:d8:f2:b6:25:ef:1d:d1:bf:29:f5:1b:fe:62:
+                    91:84:b5:2e:f7:99:fa:db:a7:7f:32:39:0b:56:8d:
+                    2b:a8:4f:44:05:fb:48:55:0f:24:e2:a6:56:6c:c6:
+                    fe:55:49:78:40:52:0e:7d:2c:f7:e4:1b:6a:3c:be:
+                    ff:90:83:0c:4f:d8:31:48:80:88:0e:4c:fa:df:2b:
+                    68:f4:4a:b6:ac:ec:a4:3a:b1:fb:10:a0:34:d9:43:
+                    b0:c1:84:46:db:22:09:6f:e0:2a:71:14:2f:0d:46:
+                    4c:95
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Subject Key Identifier: 
+                25:D3:8A:AE:2A:0C:35:4A:DF:E1:64:66:96:F2:A7:DE:19:63:05:9D
+            X509v3 Authority Key Identifier: 
+                keyid:CB:87:4F:02:5C:BE:2B:8F:79:FF:67:C9:22:5A:44:CE:9D:B0:0B:41
+                DirName:/CN=app.nelotec.co.za
+                serial:6A:BA:C9:60:27:B8:41:71:76:4F:94:C0:4C:B5:57:3D:D2:9E:00:39
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication
+            X509v3 Key Usage: 
+                Digital Signature, Key Encipherment
+            X509v3 Subject Alternative Name: 
+                DNS:app.nelotec.co.za
+    Signature Algorithm: sha256WithRSAEncryption
+    Signature Value:
+        38:90:7f:43:bb:4d:07:c1:1d:65:03:9a:49:fd:91:8e:6e:99:
+        3a:6d:b7:60:09:b5:30:b9:02:17:1a:ee:ce:b1:14:92:74:06:
+        c2:94:a7:79:73:82:48:d8:4d:30:aa:07:89:65:ca:a9:19:2b:
+        3e:15:cb:74:be:73:fa:c9:e2:0c:c0:16:81:31:26:0c:e4:1b:
+        8b:be:bb:d9:da:a4:61:70:fb:6b:96:88:99:84:92:97:c7:bb:
+        b1:1e:cc:b5:9b:d0:36:70:dc:57:9b:c7:b6:94:05:66:d1:7c:
+        3a:1b:e7:8b:49:d7:ed:dd:29:6a:59:a9:0d:de:fb:86:cc:46:
+        2c:8d:94:35:02:31:06:dc:e3:15:8a:a2:bf:fa:59:f8:65:ec:
+        da:36:e4:00:11:3f:05:b7:5d:e6:bd:c7:78:fe:3c:0b:67:6d:
+        cc:c9:10:4b:ed:b0:27:31:cc:55:a7:5b:13:3b:60:7a:f7:98:
+        cc:cf:0b:6b:33:70:cc:81:1c:26:f5:00:9e:4b:88:47:6e:81:
+        fa:82:b9:96:0f:cb:35:12:66:8e:b2:b8:0d:ac:15:b9:9c:12:
+        bf:db:5f:9b:b8:7b:5e:15:44:d9:48:cc:1b:ef:df:7a:74:a8:
+        74:ac:2e:97:f4:8c:81:90:f8:5c:b1:89:93:1c:f0:cd:4a:c8:
+        f1:e3:a8:7f
+-----BEGIN CERTIFICATE-----
+MIIDgTCCAmmgAwIBAgIRANv06JO+9MUWy92Fy6ADOoswDQYJKoZIhvcNAQELBQAw
+HDEaMBgGA1UEAwwRYXBwLm5lbG90ZWMuY28uemEwHhcNMjUxMjAyMTc1ODA3WhcN
+MjgwMzA2MTc1ODA3WjATMREwDwYDVQQDDAhwbGF0Zm9ybTCCASIwDQYJKoZIhvcN
+AQEBBQADggEPADCCAQoCggEBAJ+ikE6D+rn8jiF1BtnJz84iATflnD8mRFxQjnlF
+r/zQt/0Bqr0YHIgiRT88uD3RMZJFOPARyCTHKfROHF1EoBINWDuGBhdnlGxfezo7
+6vrhM20hCAOelZwwkhxxY9g8b3KI+n5w2al8xqjXOY7W0/ql9Mvb5TBHcZyvyKw4
+oskaEQnWizVDtnPS7gOsaIHAz2kJC4hSavjY8rYl7x3Rvyn1G/5ikYS1LveZ+tun
+fzI5C1aNK6hPRAX7SFUPJOKmVmzG/lVJeEBSDn0s9+Qbajy+/5CDDE/YMUiAiA5M
++t8raPRKtqzspDqx+xCgNNlDsMGERtsiCW/gKnEULw1GTJUCAwEAAaOBxjCBwzAJ
+BgNVHRMEAjAAMB0GA1UdDgQWBBQl04quKgw1St/hZGaW8qfeGWMFnTBXBgNVHSME
+UDBOgBTLh08CXL4rj3n/Z8kiWkTOnbALQaEgpB4wHDEaMBgGA1UEAwwRYXBwLm5l
+bG90ZWMuY28uemGCFGq6yWAnuEFxdk+UwEy1Vz3SngA5MBMGA1UdJQQMMAoGCCsG
+AQUFBwMBMAsGA1UdDwQEAwIFoDAcBgNVHREEFTATghFhcHAubmVsb3RlYy5jby56
+YTANBgkqhkiG9w0BAQsFAAOCAQEAOJB/Q7tNB8EdZQOaSf2Rjm6ZOm23YAm1MLkC
+FxruzrEUknQGwpSneXOCSNhNMKoHiWXKqRkrPhXLdL5z+sniDMAWgTEmDOQbi767
+2dqkYXD7a5aImYSSl8e7sR7MtZvQNnDcV5vHtpQFZtF8Ohvni0nX7d0palmpDd77
+hsxGLI2UNQIxBtzjFYqiv/pZ+GXs2jbkABE/Bbdd5r3HeP48C2dtzMkQS+2wJzHM
+VadbEztgeveYzM8LazNwzIEcJvUAnkuIR26B+oK5lg/LNRJmjrK4DawVuZwSv9tf
+m7h7XhVE2UjMG+/fenSodKwul/SMgZD4XLGJkxzwzUrI8eOofw==
+-----END CERTIFICATE-----

@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "highcharts": "^12.4.0",
+    "highcharts-react-official": "^3.2.3",
+    "react-google-charts": "^5.2.1"
+  }
+}
