@@ -32,6 +32,12 @@ namespace NeloFMS.API.Services
                 new Claim(ClaimTypes.Name, user.UserName ?? string.Empty)
             };
 
+            // Add tenant claim if user has a tenant
+            if (!string.IsNullOrEmpty(user.TenantId))
+            {
+                claims.Add(new Claim("TenantId", user.TenantId));
+            }
+
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));

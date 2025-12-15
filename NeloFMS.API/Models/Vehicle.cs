@@ -21,6 +21,7 @@ namespace NeloFMS.API.Models
         public double? LastSpeed { get; set; }
         public int? FuelLevel { get; set; }
         public string? Driver { get; set; }
+        public bool? Ignition { get; set; }
 
         // Foreign key
         public string? TenantId { get; set; } = string.Empty;

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 using NeloFMS.API.Models;
 using NeloFMS.API.Services;
 
@@ -9,6 +10,7 @@ namespace NeloFMS.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [EnableCors("AllowFrontend")]
+    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;

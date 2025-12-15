@@ -71,7 +71,7 @@ namespace NeloFMS.API.Data
         private static async Task SeedFleetData(AppDbContext context)
         {
             // Seed Tenants
-            if (context.Tenants.Any())
+            if (!context.Tenants.Any())
             {
                 var adivhtecTenant = new Tenant
                 {
@@ -198,7 +198,22 @@ namespace NeloFMS.API.Data
                     TenantId = "tenant-2"
                 };
 
-                context.Vehicles.AddRange(vehicle1, vehicle2, vehicle3);
+                var vehicle4 = new Vehicle
+                {
+                    Name = "Adivhtec Transport",
+                    PlateNumber = "GP-123-ZA",
+                    Make = "Toyota",
+                    Model = "Hilux",
+                    Year = 2023,
+                    VIN = "AHTCT5A000A123456",
+                    Color = "White",
+                    Status = "active",
+                    Driver = "Gilbert Adivtech",
+                    FuelLevel = 75,
+                    TenantId = "ab834c08-0110-4874-ba91-fc9e756efd4e"
+                };
+
+                context.Vehicles.AddRange(vehicle1, vehicle2, vehicle3, vehicle4);
                 await context.SaveChangesAsync();
             }
         }

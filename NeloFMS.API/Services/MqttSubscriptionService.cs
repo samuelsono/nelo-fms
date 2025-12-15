@@ -200,6 +200,12 @@ namespace NeloFMS.API.Services
                                     vehicle.LastSpeed = enrichedData.Speed;
                                     vehicle.LastLocationUpdate = enrichedData.Timestamp;
                                     
+                                    // Update ignition status if available
+                                    if (enrichedData.Ignition.HasValue)
+                                    {
+                                        vehicle.Ignition = enrichedData.Ignition.Value;
+                                    }
+                                    
                                     // Update odometer if available
                                     if (enrichedData.Odometer.HasValue)
                                     {

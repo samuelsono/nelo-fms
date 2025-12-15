@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using NeloFMS.API.Models;
 using NeloFMS.API.Services;
 
@@ -7,6 +9,7 @@ namespace NeloFMS.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class VehiclesController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -26,26 +29,60 @@ namespace NeloFMS.API.Controllers
             _logger = logger;
         }
 
+        private bool IsAdmin()
+        {
+            return User.IsInRole("Admin");
+        }
+
+        private string? GetUserTenantId()
+        {
+            return User.FindFirst("TenantId")?.Value;
+        }
+
+        private IQueryable<Vehicle> FilterVehiclesByTenant(IQueryable<Vehicle> query)
+        {
+            if (IsAdmin())
+            {
+                return query; // Admins see all vehicles
+            }
+
+            var tenantId = GetUserTenantId();
+            if (string.IsNullOrEmpty(tenantId))
+            {
+                return query.Where(v => false); // No tenant = no vehicles
+            }
+
+            return query.Where(v => v.TenantId == tenantId);
+        }
+
         // GET: api/vehicles
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
         {
-            return await _context.Vehicles
+            var query = _context.Vehicles
                 .Include(v => v.Tenant)
                 .Include(v => v.TrackingUnit)
                     .ThenInclude(tu => tu!.SimCard)
-                .ToListAsync();
+                .AsQueryable();
+
+            query = FilterVehiclesByTenant(query);
+
+            return await query.ToListAsync();
         }
 
         // GET: api/vehicles/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehicle>> GetVehicle(string id)
         {
-            var vehicle = await _context.Vehicles
+            var query = _context.Vehicles
                 .Include(v => v.Tenant)
                 .Include(v => v.TrackingUnit)
                     .ThenInclude(tu => tu!.SimCard)
-                .FirstOrDefaultAsync(v => v.Id == id);
+                .AsQueryable();
+
+            query = FilterVehiclesByTenant(query);
+
+            var vehicle = await query.FirstOrDefaultAsync(v => v.Id == id);
 
             if (vehicle == null)
             {
@@ -59,6 +96,16 @@ namespace NeloFMS.API.Controllers
         [HttpGet("tenant/{tenantId}")]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehiclesByTenant(string tenantId)
         {
+            // Only admins or users from the same tenant can access this
+            if (!IsAdmin())
+            {
+                var userTenantId = GetUserTenantId();
+                if (userTenantId != tenantId)
+                {
+                    return Forbid();
+                }
+            }
+
             return await _context.Vehicles
                 .Include(v => v.Tenant)
                 .Include(v => v.TrackingUnit)
@@ -71,11 +118,15 @@ namespace NeloFMS.API.Controllers
         [HttpGet("map-data")]
         public async Task<ActionResult<IEnumerable<VehicleMapData>>> GetVehiclesMapData()
         {
-            // Get all vehicles with their tracking units
-            var vehicles = await _context.Vehicles
+            // Get all vehicles with their tracking units, filtered by tenant
+            var query = _context.Vehicles
                 .Include(v => v.TrackingUnit)
                 .Where(v => v.TrackingUnit != null && v.TrackingUnit.ImeiNumber != null)
-                .ToListAsync();
+                .AsQueryable();
+
+            query = FilterVehiclesByTenant(query);
+
+            var vehicles = await query.ToListAsync();
 
             var mapDataList = new List<VehicleMapData>();
 
@@ -141,6 +192,7 @@ namespace NeloFMS.API.Controllers
 
         // POST: api/vehicles
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Vehicle>> CreateVehicle(Vehicle vehicle)
         {
             // Validate tenant exists
@@ -171,13 +223,21 @@ namespace NeloFMS.API.Controllers
 
         // PUT: api/vehicles/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateVehicle(string id, Vehicle vehicle)
         {
-            var existingVehicle = await _context.Vehicles.FindAsync(id);
+            var existingVehicle = await _context.Vehicles
+                .Include(v => v.TrackingUnit)
+                    .ThenInclude(tu => tu!.SimCard)
+                .FirstOrDefaultAsync(v => v.Id == id);
+            
             if (existingVehicle == null)
             {
                 return NotFound();
             }
+
+            var tenantChanged = false;
+            var oldTenantId = existingVehicle.TenantId;
 
             // Validate tenant exists if provided
             if (!string.IsNullOrEmpty(vehicle.TenantId))
@@ -187,7 +247,12 @@ namespace NeloFMS.API.Controllers
                 {
                     return BadRequest("Invalid tenant ID");
                 }
-                existingVehicle.TenantId = vehicle.TenantId;
+                
+                if (existingVehicle.TenantId != vehicle.TenantId)
+                {
+                    tenantChanged = true;
+                    existingVehicle.TenantId = vehicle.TenantId;
+                }
             }
 
             // Update properties
@@ -203,6 +268,21 @@ namespace NeloFMS.API.Controllers
             existingVehicle.Driver = vehicle.Driver;
             existingVehicle.FuelLevel = vehicle.FuelLevel;
             existingVehicle.TrackingUnitId = vehicle.TrackingUnitId;
+
+            // If tenant changed, cascade the change to related tracking unit and SIM card
+            if (tenantChanged && existingVehicle.TrackingUnit != null)
+            {
+                _logger.LogInformation($"Cascading tenant change from {oldTenantId} to {vehicle.TenantId} for vehicle {id}");
+                
+                // Note: TrackingUnit and SimCard don't have TenantId in the current model
+                // This is logged for future implementation when these models are extended
+                _logger.LogInformation($"TrackingUnit {existingVehicle.TrackingUnit.Id} is associated with vehicle {id}");
+                
+                if (existingVehicle.TrackingUnit.SimCard != null)
+                {
+                    _logger.LogInformation($"SimCard {existingVehicle.TrackingUnit.SimCard.Id} is associated with tracking unit {existingVehicle.TrackingUnit.Id}");
+                }
+            }
 
             try
             {
@@ -222,6 +302,7 @@ namespace NeloFMS.API.Controllers
 
         // DELETE: api/vehicles/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteVehicle(string id)
         {
             var vehicle = await _context.Vehicles.FindAsync(id);
